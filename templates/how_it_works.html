@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+        font-family:'Poppins',sans-serif;
+    }
+    .banner {
+        background-color: #f0f0f0;
+        padding: 20px;
+        text-align: center;
+        height:30vh;
+    }
+    
+    .banner h1 {
+        font-size: 40px;
+        margin:10px;
+        padding:30px;
+        font-family: "Lucida Console", monospace;
+    }
+    .container{
+        width:100%;
+        height:100vh;
+        overflow-y:scroll;
+        scroll-snap-type:y mandatory;
+    }
+    .slides{
+        width:100%;
+        height:100vh;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:50px;
+        color:#fff;
+        scroll-snap-align:start;
+
+    }
+    .slides img{
+        width:340px;
+    }
+    .slides h2{
+        font-size:30px;
+        font-weight:600;
+        max-width:650px;
+    }
+    .slide1{
+        background:linear-gradient(45deg,#050C9C,#3572EF); 
+        
+    }
+    .slide2{
+        background:linear-gradient(45deg,#3572EF,#3ABEF9); 
+    }
+    .slide3{
+        background:linear-gradient(45deg,#3ABEF9,#A7E6FF); 
+        color:#050C9C;
+    }
+
+    .content {
+        display: flex; 
+        flex-direction: column; 
+        margin-left: 20px; 
+    }
+
+    
+    .back-button {
+        display: flex;
+        align-items: center;
+        text-decoration: none; /* Remove underline from link */
+        padding: 10px 10px;
+        border-radius: 90%; /* Make the button circular */
+        background-color: #ddd; /* Adjust background color */
+        color: black; /* Adjust text color */
+        position: absolute; /* Position the button absolutely */
+        top: 10%; /* Center the button vertically */
+        left: 100px; /* Position the button 20px from the left edge */
+        transform: translateY(-50%); /* Offset the button for vertical centering */
+        transition: background-color 0.2s ease-in-out; /* Add hover effect (optional) */
+        font-size:40px;
+    }
+    
+    .back-button i {
+        font-size: 40px;
+        margin-right: 5px;
+    }
+    
+    .back-button:hover {
+        background-color: #ccc; /* Change background color on hover (optional) */
+    }
+    
+    
+    
+</style>
+<body>
+
+    <a href="/" class="back-button">
+        <i class="fas fa-arrow-left"></i>←
+    </a>
+
+    <section class="banner">
+        <h1>How We Unlock Hidden Emotions</h1>
+        <p>From Raw Data to Visual Stories This is How We Craft Your Insights</p>
+    </section>
+
+    <div class="comtainer">
+        <div class="slides slide1">
+          <img src="static/pic-1.png">
+
+          <div class="content">          
+          <h2>⭐ Connect with your text data⭐</h2>
+          <br>
+          <h3>You can enter the textual data or upload your csv file containing <br>reviews as column in it for seamless analysis</h3>
+          </div>
+
+        
+
+        </div>
+
+        <div class="slides slide2">
+            <img src="static/pic-2.png">
+
+            <div class="content">
+            <h2>⭐ Turn your Data into emotions⭐</h2>
+            <br>
+            <h3>We leverage powerful machine learning models like Logistic Regression,<br>XGBoost, Voting Classifiers, and Stacking Classifiers to accurately analyze <br>your text data
+                Our models are trained to identify the underlying emotions <br>within your text, providing valuable insights
+            </h3>
+            </div>
+
+          </div>
+
+          <div class="slides slide3">
+            <img src="static/pic-3.png">
+
+            <div class="content">
+            <h2>⭐ Put the insights to work⭐</h2>
+            <br>
+            <h3>Gain actionable insights through clear and intuitive visualizations like pie charts and <br>graphs Make informed business decisions based on the emotional trends <br>revealed in your text data.</h3>
+            </div>
+
+          </div>
+
+
+    </div>
+</body>
+</html>

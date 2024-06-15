@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Classification</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin:0;
+            padding:0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 900px;
+        }
+        .card {
+            margin-top: 150px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .badge-custom {
+            color: white;
+            
+        }
+        .benefits{
+            display: flex;
+            flex-direction: column; 
+            align-items: center; 
+            width: 75%; 
+            margin: 100px auto; 
+        } 
+        .box{
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            margin: 10px; 
+            text-align: center; 
+            font-size: 18px; 
+        }
+        .box-container {
+            display: flex; 
+            justify-content: space-between;
+        }
+        
+        .bancontainer{
+         position:relative;
+         width:100%;
+         height:50vh;
+
+        }
+        .banner{
+            position:relative;
+            width:100%;
+            height:45vh;
+            background: linear-gradient(to right, #003285 50%, #EEF1FF);
+            background-size:cover;
+            background-position:69%;
+            border-radius:10px;
+            margin-top:1px;
+            padding: 0 50px; /* Adjusted padding */
+        }
+        .banner-text{
+            padding-top:100px;
+            margin-left:50px;
+        }
+        .banner-text h2{
+            letter-spacing:10px;
+            font-weight:bold;
+            color:white;
+            font-size:25px;
+        }
+        .banner-text h1{
+            margin-left:5px;
+            font-size:60px;
+            padding:5px;
+            color:white;
+        }
+        #btn{
+            width:240px;
+            height:35px;
+            font-weight:bold;
+            background-color:#FF7F3E;
+            letter-spacing:3px;
+            margin-left:50px;
+            color:white;
+            border-radius:20px;
+            border:none;
+            transition: background-color 0.2s ease-in-out;
+        }
+        #btn:hover {
+            background-color: #FFDA78; 
+        }
+        
+        .gradient-text {
+            display: inline-block; 
+            background-image: linear-gradient(to right, #0039a6, #FF7F3E); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent;
+            font-size: 48px; 
+            font-weight: bold; 
+        }
+
+        .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+            background-color: #FF7F3E !important;
+        }
+        .header-btn{
+            padding:13px;
+        }
+        .logo {
+            position: absolute; /* Added absolute positioning for logo */
+            top: 20px; /* Adjusted top position */
+            right: 200px; /* Adjusted right position */
+            width: 100px; /* Adjust size as needed */
+            height: 100px; /* Maintain aspect ratio */
+            z-index: 1; /* Ensure logo is above background */
+        }
+        
+    </style>
+</head>
+<body>
+
+<!--banner-->
+    <div class="bancontainer">
+        <div class="banner">
+            <div class="banner-text">
+                <h2>Try it Now!</h2>
+                <h1>🎭Emotion Classifier</h1>
+                <form action="/how_it_works.html" method="get">
+                    <button id="btn">How it Works ➜</button>
+                </form> 
+            </div>
+<!--logo-->
+            <div class="logocontainer">
+                <div class="logo">
+                    <img src="static/infosyslogo.png" width="270%" height="210%"/>
+                <div> 
+            </div>
+<!--logo-->
+
+        </div> 
+    </div>
+<!--banner-->
+
+    <div class="container">
+
+        <div class="card">
+            <div class="header-btn" style="background-color:#2A629A;border-radius:2px 2px 0px 0px">
+                <h2 style="color:white;">Classifying Emotions In Text Data</h2>
+            </div>
+            <div class="card-body">
+                <form action="/predict" method="post">
+                    <div class="form-group">
+                        <label for="text">Enter a sentence:</label>
+                        <input type="text" id="text" placeholder="Enter text here.." name="text" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Classify</button>
+                </form>
+                <hr>
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="file">Upload CSV file with reviews:</label>
+                        <input type="file" id="file" name="file" class="form-control-file" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Upload</button>
+                </form>
+            </div>
+        </div>
+
+        {% if input_text %}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-success text-white">
+                            <h3>Input Text:</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>{{ input_text }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            <h3>Predictions:</h3>
+                            <select id="sort-metrics" class="form-control">
+                                <option value="">Sort by metric</option>
+                                {% for metric in metrics %}
+                                    <option value="{{ metric }}">{{ metric }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="card-body">
+                            <ul id="predictions-list" class="list-group">
+                                {% for model_name, prediction in predictions.items() %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong>{{ model_name }}:</strong>
+                                            <span class="badge badge-custom badge-pill" style="background-color: {{ prediction_colors[model_name] }}">{{ prediction }}</span>
+                                        </div>
+                                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#{{ model_name | replace(' ', '') }}Metrics" aria-expanded="false" aria-controls="{{ model_name | replace(' ', '') }}Metrics">
+                                            Metrics
+                                        </button>
+                                        <div class="collapse" id="{{ model_name | replace(' ', '') }}Metrics">
+                                            <ul class="list-group mt-2">
+                                                {% for metric, value in models[model_name]['metrics'].items() %}
+                                                    <li class="list-group-item"  data-metric="{{ metric }}" data-value="{{ value }}">{{ metric }}: {{ value }}%</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+<!--benefits-->
+    <div class="benefits">
+        <span class="gradient-text">Emotion Classification Benefits</span>
+        <div class="box-container">  
+            <div class="box"> <h3>🫡</h3><br><b style="color:#003285;">Quickly detect negative comments & respond instantly</b></div>
+            <div class="box"> <h3>👩‍💻</h3><br><b style="color:#003285;">Analyze customer sentiment & improve brand reputation</b></div>
+            <div class="box"> <h3>📊</h3><br><b style="color:#003285;">Gain valuable insights from social media feedback</b></div>
+            <div class="box"> <h3>🤝</h3><br><b style="color:#003285;">Enhance customer satisfaction & loyalty</b></div>
+        </div>
+    </div>
+<!--benefits-->
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('sort-metrics').addEventListener('change', function () {
+            let selectedMetric = this.value;
+            console.log(`Selected Metric: ${selectedMetric}`);
+            let predictionsList = document.getElementById('predictions-list');
+            let predictions = Array.from(predictionsList.getElementsByTagName('li'));
+
+            predictions.forEach(function (item) {
+                let metricItem = item.querySelector(`.list-group-item[data-metric="${selectedMetric}"]`);
+                let modelName = item.querySelector('strong');
+                if (modelName) {
+                    console.log(`Model: ${modelName.innerText}, Metric Value: ${metricItem ? metricItem.getAttribute('data-value') : 'N/A'}`);
+                } else {
+                    console.log('Model name not found.');
+                }
+            });
+
+            predictions.sort(function (a, b) {
+                let aValue = a.querySelector(`.list-group-item[data-metric="${selectedMetric}"]`);
+                let bValue = b.querySelector(`.list-group-item[data-metric="${selectedMetric}"]`);
+                aValue = aValue ? parseFloat(aValue.getAttribute('data-value')) : -Infinity;
+                bValue = bValue ? parseFloat(bValue.getAttribute('data-value')) : -Infinity;
+                return bValue - aValue;
+            });
+            console.log(predictions)
+
+            predictionsList.innerHTML = '';
+            predictions.slice(0, 4).forEach(function (item) {
+                predictionsList.appendChild(item);
+            });
+        });
+    </script>
+</body>
+</html>
